@@ -18,6 +18,8 @@ class Category(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=200)
+
     publishing_date = models.DateField()
     expense = models.FloatField(default=0.0)  # Assuming 0.0 as default value
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
