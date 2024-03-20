@@ -19,17 +19,11 @@ class AuthorView(generics.ListCreateAPIView, generics.DestroyAPIView):
     queryset = Author.objects.all()
     
     def create(self, request, *args, **kwargs):
-        serializer_instances = []
-
-        for author_data in request.data:
-            serializer = self.get_serializer(data=author_data)
-            serializer.is_valid(raise_exception=True)
-            serializer_instances.append(serializer)
-            self.perform_create(serializer)
-        headers = self.get_success_headers(serializer_instances[-1].data)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
         
-        return Response([serializer.data for serializer in serializer_instances], status=status.HTTP_201_CREATED, headers=headers)
-    
+        return Response(serializer.data , status=status.HTTP_201_CREATED)
 
 class AuthorViewFind(viewsets.ViewSet):
     def retrieve(self, request, pk=None, *args, **kwargs):

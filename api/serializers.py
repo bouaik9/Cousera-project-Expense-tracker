@@ -5,6 +5,11 @@ class BookSerializer(ModelSerializer):
     class Meta:
         model = Book
         fields = "__all__"
+    def validate_name(self, value):
+        # Check if an author with the same name already exists
+        if Author.objects.filter(name=value).exists():
+            raise ValidationError("An author with this name already exists.")
+        return value
 
 class AuthorSerializer(ModelSerializer):
     class Meta:
@@ -20,6 +25,11 @@ class CategorySerializer(ModelSerializer):
     class Meta:
         model = Category
         fields = "__all__"
+    def validate_name(self, value):
+        # Check if an author with the same name already exists
+        if Author.objects.filter(name=value).exists():
+            raise ValidationError("An author with this name already exists.")
+        return value
 
 class PublisherSerializer(ModelSerializer):
     class Meta:
