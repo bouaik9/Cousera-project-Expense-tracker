@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+header  {
+  
+  display: flex;
+  justify-content: center;
+  margin: 10px 20px;
+  background: #c0bfbf;
+  border: #c0bfbf solid 1px;
+  border-radius: 2px;
+  padding: 20px;
+  
+
+}
+header div {
+  margin: 30px;
+}
+header nav a{
+  font-family: 'Montserrat', sans-serif;
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: black;
+  margin: 30px;
+
+}
+section{
+  margin: 30px 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.element{
+  grid-column: span 1;
+  
+}
+div {
+
+  display: flex;
+
+}
+div img{
+  width: 30%;
+  border-radius: 10px;
+}
+/* Apply basic styling to the table */
+table {
+    grid-column: span 2;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Apply styling to table header cells */
+th {
+    background-color: #f2f2f2;
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
+}
+
+/* Apply styling to table data cells */
+td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+}
+
+/* Apply alternating background color to rows */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

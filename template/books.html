@@ -1,0 +1,36 @@
+{% extends 'basic.html' %}
+{% load static %} <!-- Make sure to include this line at the top -->
+
+
+    
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'css/books.css' %}">
+    
+    <section>
+        <table>
+            <t>
+                <th>Title</th>
+                <th>Subtitle</th>
+                <th>Author</th>
+                <th>Publisher</th>
+                <th>Publish date</th>
+                <th>Categroy</th>
+                <th>Expense</th>
+
+
+            </tr>
+            {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.subtitle }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.publisher }}</td>
+                    <td>{{ book.publishing_date }}</td>
+                    <td>{{ book.category }}</td>
+                    <td>{{ book.expense }}</td>
+                </tr>
+                {% endfor %}
+        </table>
+    </section>
+    {% endblock %}
