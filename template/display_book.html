@@ -1,0 +1,56 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+
+
+<link rel="stylesheet" href="{% static 'css/display_book.css' %}">
+<div class="container">
+<h1>New Book Added !</h1>
+
+    <div class="flex-container">
+        <label for="">Title </label>
+        <p class="dot">:</p>
+        <p>{{book.title}}</p>
+    </div>
+    <div class="flex-container">
+        <label for="">Subtitle </label>
+        <p class="dot">:</p>
+
+        <p>{{book.subtitle}}</p>
+    </div>
+    <div class="flex-container">
+        <label for="">Author </label>
+        <p class="dot">:</p>
+
+        <p>{{book.author.name}}</p>
+    </div>
+    <div class="flex-container">
+        <label for="">Category </label>
+        <p class="dot">:</p>
+
+        <p>{{book.categroy.name}}</p>
+    </div>
+    <div class="flex-container">
+        <label for="">Publisher </label>
+        <p class="dot">:</p>
+
+        <p>{{book.publisher.name}}</p>
+    </div>
+    <div class="flex-container">
+        <label for="">Publishing date </label>
+        <p class="dot">:</p>
+
+        <p>{{book.publishing_date}}</p>
+    </div>
+    <div class="flex-container">
+        <label for="">Expense </label>
+        <p class="dot">:</p>
+
+        <p>{{book.expense}}</p>
+    </div>
+
+
+
+</div>
+
+{% endblock %}

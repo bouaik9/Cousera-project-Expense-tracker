@@ -1,0 +1,63 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/add_book.css' %}">
+<div class="grid">
+    
+    <form id="bookForm" action="/book/add" method="POST">
+        {% csrf_token %}
+      <fieldset>
+          <legend>Add Book</legend>
+
+          {% for field in form %}
+          <label for="">{{ field.label_tag }}</label>
+          <div class="{{ field.html_name }}">
+          {% if field.html_name in myfields %}
+            
+            <div style="display: flex;align-items: center;" class="add-link">
+              {{ field }}
+              <a href="#">add</a>
+            </div>
+            {% else %}    
+                {{ field }}
+            {% endif %}
+            </div>
+             
+         
+      {% endfor %}
+
+</fieldset>
+<div class="form-submit">
+    <button type="submit">Submit</button>
+</div>
+    
+</form>
+
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const textInputs = document.querySelectorAll('input[type="text"], input[type="date"], input[type="number"]');
+        textInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (input.value.trim()) {
+                    input.style.borderColor = 'green';
+                } else {
+                    input.style.borderColor = 'black';
+                }
+            });
+        });
+
+        var selectTags = document.querySelectorAll('select'); // Select all select elements
+        selectTags.forEach(selectTag => {
+            selectTag.addEventListener('change', function(){
+                if (selectTag.selectedIndex !== -1) {
+                    selectTag.style.borderColor = 'green';
+                }
+            });
+        });
+
+        
+    });
+</script>
+{% endblock %}

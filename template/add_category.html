@@ -1,0 +1,28 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/add_book.css' %}">
+<div class="grid">
+    
+    <form id="bookForm" action="/category/add" method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Add Category :</legend>
+
+            {{ form }}
+             
+        
+        </fieldset>
+        <div class="form-submit">
+            <button type="submit">Submit</button>
+        </div>
+    
+    </form>
+
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'basic.html' %}
+{% load static %} <!-- Make sure to include this line at the top -->
+
+{% block content %}
+
+<div class="container" style="display: flex;justify-content: center; align-items: center;flex-direction: column;">
+    <h1>Success!</h1>
+    <img src="{% static 'image/success_icon.png' %}" alt="">
+
+</div>
+
+
+
+{% endblock %}
