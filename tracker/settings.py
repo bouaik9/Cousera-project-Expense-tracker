@@ -39,9 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
+    'import_export',
     'rest_framework',
     'Book',
-    'corsheaders'
+    'corsheaders',
+    'upload'
 ]
 
 MIDDLEWARE = [
@@ -83,8 +85,12 @@ WSGI_APPLICATION = 'tracker.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tracker',
+        'USER': 'ayoub',
+        'PASSWORD': 'ayoub',
+        'HOST': 'localhost',  # Or your MySQL host
+        'PORT': '3306',       # Or your MySQL port
     }
 }
 
@@ -135,3 +141,5 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+IMPORT_EXPORT_USE_TRANSACTIONS=True

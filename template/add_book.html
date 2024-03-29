@@ -17,7 +17,8 @@
             
             <div style="display: flex;align-items: center;" class="add-link">
               {{ field }}
-              <a href="#">add</a>
+              <a href="/{{ field.html_name }}/add">add</a>
+              <button  type="button" id="{{ field.html_name }}">Order</button>
             </div>
             {% else %}    
                 {{ field }}
@@ -59,5 +60,35 @@
 
         
     });
+   
+
+  //--------------------------
+    function orderOptions(argument) {
+    var select = document.getElementById(argument);
+    var options = Array.from(select.options);
+
+    options.sort(function(a, b) {
+        return a.text.localeCompare(b.text);
+    });
+
+    select.innerHTML = "";
+    options.forEach(function(option) {
+        select.add(option);
+    });
+    }
+    //-----------------sort publisher author category-----------
+    
+    document.getElementById("category").addEventListener("click", function() {
+        orderOptions("id_category");
+        });
+
+    document.getElementById("author").addEventListener("click", function() {
+    orderOptions("id_author");
+    });
+    document.getElementById("author").addEventListener("click", function() {
+    orderOptions("id_publisher");
+    });
+
+
 </script>
 {% endblock %}

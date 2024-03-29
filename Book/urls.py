@@ -13,6 +13,8 @@ urlpatterns = [
     path('category/add', AddCategoryForm, name='ash'),
     path('publisher/add', AddPublisherForm, name='ash'),
     path('thanks/', success_page, name='ash'),
+    path('chart/', charts, name='ash'),
+
 
 
 

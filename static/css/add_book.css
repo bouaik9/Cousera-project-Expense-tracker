@@ -78,12 +78,7 @@ font-size: 16px;
 legend{
     text-align: center;
 }
-.add-link a{
-    text-decoration: none;
-    font-size: 1rem;
-    color: #333;
-    margin-left: 3px;
-}
+
 /* Style for the submit button and its container */
 .form-submit {
 margin-top: 0px;
@@ -104,4 +99,21 @@ transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Added trans
 .form-submit button[type="submit"]:hover {
 background-color: #555;
 border-color: #555; /* Change border color on hover */
+}
+
+.add-link a{
+    text-decoration: none;
+    font-size: 1rem;
+    color: #333;
+    margin-left: 3px;
+}
+
+button[type="button"]{
+    text-decoration: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: #333;
+    background-color: transparent;
+    margin-left: 3px;
+    border: none;
 }

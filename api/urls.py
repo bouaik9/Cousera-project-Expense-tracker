@@ -14,6 +14,8 @@ urlpatterns = [
     path('category', CategoryView.as_view(), name='category'),
     path('category/<str:category>/', CategoryViewFind.as_view({'get': 'retrieve'}), name='author-find'),
 
+    path('p', m, name="uplaod")
+
 
 ]
 

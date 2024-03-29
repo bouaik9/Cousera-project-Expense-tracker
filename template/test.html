@@ -3,160 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <title>Expense Distribution Chart</title>
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <header>
-    <div class="navbar">
-      <a href="#home">Home</a>
-      <a href="#news">News</a>
-      <div class="dropdown">
-        <button class="dropbtn">Book
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-          <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </div> 
+    <section style="display: grid;grid-template-columns: 1fr 1fr;">
+    <div style="display: inline-block;grid-column: 1 / span 1;width: 80%;">
+        <canvas id="expenseChart"></canvas>
     </div>
-      
-  </header>
+</section>
 
-  <div class="grid">
-  <form id="bookForm">
-    <fieldset>
-        <legend>Add Book</legend>
-        <div class="form-title">
-            <div class="flex-container">
-                <label for="title">Title:</label>
-                <input type="text" name="title">
-                <div id="valid">Look good!</div>
-            </div>
-        </div>
-        <!-- Author -->
-        
-        <div class="form-author">
-            <div class="flex-container">
-                <label for="author">Author:</label>
-                <select name="author">
-                    <option value=""></option>
-                    <option value="ayoub">ayoub</option>
-                    <option value="ayoub">ayoub</option>
-                    <option value="ayoub">ayoub</option>
-                </select>
-                <div id="valid">Look good!</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch data from the API
+            fetch('http://127.0.0.1:8000/v1/book/')
+                .then(response => response.json())
+                .then(data => {
+                    const categories = {};
+                    const colors = ['#FF5733', '#C70039', '#900C3F', '#581845']; // Define colors for each label
 
-            </div>
-        </div>
-        <!-- Publisher -->
-        <div class="form-publisher">
-            <div class="flex-container">
-                <label for="publisher">Publisher:</label>
-                <select name="publisher">
-                    <option value=""></option>
-                    <option value="ayoub">ayoub</option>
-                    <option value="ayoub">ayoub</option>
-                    <option value="ayoub">ayoub</option>
-                </select>
-                <div id="valid">Look good!</div>
+                    // Process fetched data
+                    data.forEach((item, index) => {
+                        const category = item.category.name;
+                        const expense = item.expense;
 
-            </div>
-        </div>
-        <!-- date -->
-        <div class="form-date">
-            <div class="flex-container">
-                <label for="date">published date:</label>
-                <input type="date" name="publication_date">
-            </div>
-            <div id="valid">Look good!</div>
+                        if (!categories[category]) {
+                            categories[category] = 0;
+                        }
 
-        </div>
-        <!-- category -->
-        <div class="form-category">
-            <div class="flex-container">
-                <label for="category">Category:</label>
-                <select name="category">
-                    <option value=""></option>
-                    <option value="ayoub">ayoub</option>
-                    <option value="ayoub">ayoub</option>
-                    <option value="ayoub">ayoub</option>
-                </select>
-            </div>
-            <div id="valid">Look good!</div>
+                        categories[category] += expense;
+                    });
 
-        </div>
-        <div class="form-expense">
-            <div class="flex-container">
-                <label for="expense">Distribution expense</label>
-                <input type="text" name="distribution_expense">
-            </div>
-            <div id="valid">Look good!</div>
+                    // Prepare data for Chart.js
+                    const ctx = document.getElementById('expenseChart').getContext('2d');
+                    const chartData = {
+                        labels: Object.keys(categories),
+                        datasets: [{
+                            label: 'Expense Distribution by Category',
+                            data: Object.values(categories),
+                            backgroundColor: colors, // Assign colors array
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    };
 
-        </div>
-        <!-- Submit button -->
-        <div class="form-submit">
-            <button type="submit">Submit</button>
-        </div>
-    </fieldset>
-    
-  </form>
-  
-</div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const textInputs = document.querySelectorAll('input[type="text"], input[type="date"]');
-        textInputs.forEach(input => {
-            input.addEventListener('input', function() {
-                if (input.value.trim()) {
-                    input.style.borderColor = 'green';
-                } else {
-                    input.style.borderColor = 'black';
-                }
-            });
+                    // Create the chart
+                    const myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: chartData,
+                        options: {
+                            scales: {
+                                xAxes: [{ stacked: true }],
+                                yAxes: [{ stacked: true }]
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
         });
-
-        var selectTags = document.querySelectorAll('select'); // Select all select elements
-        selectTags.forEach(selectTag => {
-            selectTag.addEventListener('change', function(){
-                if (selectTag.selectedIndex !== -1) {
-                    selectTag.style.borderColor = 'green';
-                }
-            });
-        });
-
-        // Form submission event listener
-        document.getElementById('bookForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            // Serialize form data into JSON
-            var formData = {};
-            var formElements = this.elements;
-            for (var i = 0; i < formElements.length; i++) {
-                var element = formElements[i];
-                if (element.tagName === 'INPUT' || element.tagName === 'SELECT') {
-                    formData[element.name] = element.value;
-                }
-            }
-
-            // Send form data to API using AJAX
-            fetch('http://127.0.0.1:8000/v1/book/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                // Handle error
-            });
-        });
-    });
-</script>
-
+    </script>
 </body>
 </html>

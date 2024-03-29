@@ -1,72 +1,47 @@
-import pandas as pd
-import requests
-import json
+import csv
 from datetime import datetime
 
-df = pd.read_excel("csv.xlsx")
+import os
+import django
 
-df = df.fillna(' ')
+# Set the Django settings module environment variable
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "your_project.settings")
 
-url = "http://127.0.0.1:8000/v1/author/"
+# Setup Django
+django.setup()
+from api.models import Book, Author, Publisher, Category
 
-publishers = {}
-categories = {}
-authors = {}
+def add_books_from_csv(csv_file):
+    with open(csv_file, 'r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            # Assuming CSV columns: title, subtitle, publishing_date, expense, author_name, publisher_name, category_name
+            # You may need to adjust this based on your actual CSV structure
+            
+            # Create or get Author object
+            print("here")
+            author, _ = Author.objects.get_or_create(name=row['authors'])
+            
+            # Create or get Publisher object
+            publisher, _ = Publisher.objects.get_or_create(name=row['publisher'])
+            
+            # Create or get Category object
+            category, _ = Category.objects.get_or_create(name=row['category'])
+            
+            # Convert string date to datetime object
+            publishing_date = datetime.strptime(row['published_date'], '%m/%d/%Y').date()
+            
+            # Create Book object
+            book = Book.objects.create(
+                title=row['title'],
+                subtitle=row['subtitle'],
+                publishing_date=publishing_date,
+                expense=float(row['distribution_expense']),
+                author=author,
+                publisher=publisher,
+                category=category
+            )
+            book.save()
 
-
-bookurl = "http://127.0.0.1:8000/v1/book/"
-
-p = 0
-c = 0
-a = 0
-
-purl = "http://127.0.0.1:8000/v1/publisher/"
-curl = "http://127.0.0.1:8000/v1/category/"
-aurl = "http://127.0.0.1:8000/v1/author/"
-
-
-for index, row in df.iterrows():
-    try:
-        p = publishers[row['publisher']]
-    except:
-    
-        temp = purl + row['publisher'].replace(" ", "+") + "/"
-        res = requests.get(temp).json()
-        p = res['id']
-        publishers[row['publisher']] = p
-
-
-    try:
-        c = categories[row['category']]
-    except:
-        temp = curl + row['category'].replace(" ", "+") + "/"
-        res = requests.get(temp).json()
-        c = res['id']
-        categories[row['category']] = c
-
-    try:
-        a = authors[row['authors']]
-    except:
-        temp = aurl + row['authors'].replace(" ", "+") + "/"
-        res = requests.get(temp).json()
-        a = res['id']
-        authors[row['authors']] = a
-        
-    publishing_date = row['published_date'].strftime('%Y-%m-%d')  # Convert to string
-
-    js = {
-        "title": row['title'],
-        "subtitle": row['subtitle'],
-        "publishing_date": publishing_date,  # Use the converted string
-        "expense": row['distribution_expense'],
-        "publisher": p,
-        "category": c,
-        "author": a
-    }
-    try:
-        ress = requests.post(bookurl, json=js)
-    except Exception as e:
-        print(e)
-        print(row['title'])
-        pass
-  
+# Usage example:
+add_books_from_csv('csv.csv')

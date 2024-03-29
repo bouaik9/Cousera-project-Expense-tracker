@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from api.views import Book
 from django.utils import timezone
 from django.views.generic.list import ListView
@@ -98,3 +98,16 @@ def AddPublisherForm(request):
 
 def success_page(request):
     return render(request, 'success.html')
+
+
+
+def charts(request):
+    data = []
+    label = []
+    query = Book.objects.order_by("title")[:5]
+    for ele in query:
+        data.append(ele.expense)
+        label.append(ele.title)
+    return render(request, 'test.html', {"lables":label, "data":data, "query":query})
+
+
